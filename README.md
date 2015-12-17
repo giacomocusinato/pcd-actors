@@ -1,6 +1,6 @@
 # pcd-actors
 
-> This repository contains in implementation of the actor system as a solution to the following assignment
+> This repository contains an implementation of the actor system as a solution to the following assignment
  (https://github.com/rcardin/pcd-actors).
 
 A mock system that abstract a simplified implementation of the [actor model](https://en.wikipedia.org/wiki/Actor_model). 
