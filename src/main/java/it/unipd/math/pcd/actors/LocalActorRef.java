@@ -38,7 +38,11 @@ package it.unipd.math.pcd.actors;
  * @version 1.0
  * @since 1.0
  */
-public class LocalActorRef extends AbsActorRef {
+public class LocalActorRef<T extends Message> extends AbsActorRef<T> {
+
+    public LocalActorRef(AbsActorSystem system) {
+        super(system);
+    }
 
     /**
      * Sends a {@code message} to another actor.
@@ -47,7 +51,7 @@ public class LocalActorRef extends AbsActorRef {
      * @param to The actor to which sending the message
      */
     @Override
-    public void send(Message message, ActorRef to) {
+    public void send(T message, ActorRef to) {
 
     }
 

@@ -40,9 +40,20 @@ package it.unipd.math.pcd.actors;
  */
 public class BaseActorSystem extends AbsActorSystem {
 
+    /**
+     * Creates an ActorRef object of the given type.
+     *
+     * @param mode type of the ActorRef to be created
+     * @return the created ActorRef object
+     */
     @Override
     protected ActorRef createActorReference(ActorMode mode) {
-        return null;
+
+        if (mode == ActorMode.LOCAL) {
+            return new LocalActorRef(this);
+        } else
+
+        throw new IllegalArgumentException();
     }
 
     @Override
