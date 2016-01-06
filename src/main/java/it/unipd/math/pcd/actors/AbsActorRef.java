@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2015 Riccardo Cardin
+ * Copyright (c) 2015 Giacomo Cusinato
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,26 @@
  * @since 1.0
  */
 
-/**
- * Please, insert description here.
- *
- * @author Giacomo Cusinato
- * @version 1.0
- * @since 1.0
- */
 package it.unipd.math.pcd.actors;
 
 
 /**
- * Represents a base message that actor send among each others. Each message is logically divided into
- * three parts:
- * <ul>
- *     <li>A tag, which represents the operation requested by the message</li>
- *     <li>A target, which represents the address of the actor receiving the message</li>
- *     <li>A payload, which may represent the data that have to be sent with the message</li>
- * </ul>
+ * An abstract implementation of the Actor reference.
  *
  * @author Giacomo Cusinato
  * @version 1.0
  * @since 1.0
  */
-public class BaseMessage<T> implements Message {
-    private final String tag;
-    private final ActorRef<BaseMessage> target;
-    private final T payload;
+public abstract class AbsActorRef<T extends Message> implements ActorRef<T> {
 
-    public BaseMessage(String tag, ActorRef<BaseMessage> target, T payload) {
-        this.tag = tag;
-        this.target = target;
-        this.payload = payload;
+    /**
+     * Check if an instance of an ActorRef is the same of the current object instance.
+     *
+     * @param o ActorRef compared to the current instance
+     * @return 0 if the instance is the same, -1 otherwise
+     */
+    @Override
+    public int compareTo(ActorRef o) {
+        return (this == o) ? 0 : -1;
     }
 }
