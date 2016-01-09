@@ -60,7 +60,7 @@ public interface MailBox<T extends Message> {
      * @param message The type of messages the actor can receive
      * @param index The index of the list to add the message to.
      */
-    boolean add(int index, T message);
+    void add(int index, T message);
 
     /**
      * Removes a message from the mailbox.

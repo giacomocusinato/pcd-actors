@@ -52,13 +52,13 @@ public class BaseMailBox<T extends Message> implements MailBox<T> {
     protected ArrayList<T> list = new ArrayList<>();
 
     @Override
-    public synchronized boolean add(int index, T message) {
+    public synchronized void add(int index, T message) {
         this.list.add(index, message);
     }
 
     @Override
     public synchronized boolean add(T message) {
-        this.list.add(message);
+        return this.list.add(message);
     }
 
     @Override
