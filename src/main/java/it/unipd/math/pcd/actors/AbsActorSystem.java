@@ -80,5 +80,9 @@ public abstract class AbsActorSystem implements ActorSystem {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
 
+    public AbsActor<?> getActor(AbsActorRef<? extends Message> ref) {
+        return (AbsActor<? extends Message>) actors.get(ref);
+    }
+
     protected abstract ActorRef createActorReference(ActorMode mode);
 }
