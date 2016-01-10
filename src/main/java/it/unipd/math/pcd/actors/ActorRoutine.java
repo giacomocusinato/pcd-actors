@@ -32,28 +32,57 @@ package it.unipd.math.pcd.actors;
 
 
 /**
- * A representation of a local ActorRef.
+ * A thread the constantly checks an actor mailbox status.
  *
  * @author Giacomo Cusinato
  * @version 1.0
  * @since 1.0
  */
-public class LocalActorRef<T extends Message> extends AbsActorRef<T> {
+public class ActorRoutine<T extends Message> extends Thread {
 
-    public LocalActorRef(AbsActorSystem system) {
-        super(system);
-    }
+    private final AbsActor actorInstance;
+    private final MailBox mailBoxInstance;
+
 
     /**
-     * Sends a {@code message} to another actor.
-     *
-     * @param message The message to send
-     * @param to The actor to which sending the message
+     * This service is responsible to process the received
+     * message in a different thread.
      */
-    @Override
-    public void send(T message, ActorRef to) {
-        AbsActor receiver = (AbsActor) actorSystem.getActor(to);
-        receiver.scheduleMessage(message, to);
+    private class ReceiveService extends Thread {
+
+        Message message;
+
+        ReceiveService(Message m) {
+            message = m;
+        }
+
+        @Override
+        public void run() {
+            actorInstance.receive(message);
+            actorInstance.isBusy = false;
+        }
     }
 
+    public ActorRoutine(AbsActor<? extends Message> actor, MailBox<? extends Message> mailBox) {
+        actorInstance = actor;
+        mailBoxInstance = mailBox;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (this.mailBoxInstance) {
+                while(mailBoxInstance.size() == 0 || actorInstance.isBusy) {
+                    try {
+                        mailBoxInstance.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                new ReceiveService(mailBoxInstance.remove(0)).start();
+                this.actorInstance.isBusy = true;
+            }
+        }
+    }
 }

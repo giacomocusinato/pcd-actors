@@ -80,8 +80,16 @@ public abstract class AbsActorSystem implements ActorSystem {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
 
-    public AbsActor<?> getActor(AbsActorRef<? extends Message> ref) {
-        return (AbsActor<? extends Message>) actors.get(ref);
+    public Actor getActor(ActorRef ref) {
+        Actor actor = actors.get(ref);
+
+        if (actor != null) {
+            return actor;
+        } else {
+            throw new NoSuchActorException();
+        }
+
+
     }
 
     protected abstract ActorRef createActorReference(ActorMode mode);

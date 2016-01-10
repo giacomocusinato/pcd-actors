@@ -47,14 +47,31 @@ package it.unipd.math.pcd.actors;
 public abstract class AbsActor<T extends Message> implements Actor<T> {
 
     /**
-     * Self-reference of the actor
+     * Mailbox of the current actor.
+     */
+    protected final MailBox<T> mailBox = new BaseMailBox<>();
+
+    /**
+     * Tells if the actor is currently processing a received message.
+     */
+    public boolean isBusy = false;
+
+    /**
+     * Self-reference of the actor.
      */
     protected ActorRef<T> self;
 
     /**
-     * Sender of the current message
+     * Sender of the current message.
      */
     protected ActorRef<T> sender;
+
+    /**
+     * Class constructor.
+     */
+    public AbsActor() {
+        new ActorRoutine<T>(this, mailBox).start();
+    }
 
     /**
      * Sets the self-referece.
@@ -65,5 +82,14 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     protected final Actor<T> setSelf(ActorRef<T> self) {
         this.self = self;
         return this;
+    }
+
+    /**
+     * Adds a new message to the actor's mailbox.
+     */
+    public final void scheduleMessage(T message, ActorRef<T> send) {
+        this.mailBox.add(message);
+        this.mailBox.notifyAll();
+        this.sender = send;
     }
 }
