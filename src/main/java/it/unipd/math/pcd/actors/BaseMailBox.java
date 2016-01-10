@@ -62,8 +62,8 @@ public class BaseMailBox<T extends Message> implements MailBox<T> {
     }
 
     @Override
-    public synchronized boolean remove(T message) {
-        return this.list.remove(message);
+    public synchronized T remove(int index) {
+        return this.list.remove(index);
     }
 
     @Override

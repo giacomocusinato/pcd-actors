@@ -67,7 +67,7 @@ public interface MailBox<T extends Message> {
      *
      * @param message The type of messages the actor can receive
      */
-    boolean remove(T message);
+    T remove(int index);
 
     /**
      * Gets the size of the mailbox.
