@@ -88,8 +88,11 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
      * Adds a new message to the actor's mailbox.
      */
     public final void scheduleMessage(T message, ActorRef<T> send) {
-        this.mailBox.add(message);
-        this.mailBox.notifyAll();
-        this.sender = send;
+        synchronized (this.mailBox) {
+            this.sender = send;
+
+            this.mailBox.add(message);
+            this.mailBox.notify();
+        }
     }
 }

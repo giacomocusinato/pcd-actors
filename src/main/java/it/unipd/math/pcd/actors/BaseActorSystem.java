@@ -51,9 +51,9 @@ public class BaseActorSystem extends AbsActorSystem {
 
         if (mode == ActorMode.LOCAL) {
             return new LocalActorRef(this);
-        } else
-
-        throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override

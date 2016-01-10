@@ -59,9 +59,15 @@ public class ActorRoutine<T extends Message> extends Thread {
         @Override
         public void run() {
             actorInstance.receive(message);
-            actorInstance.isBusy = false;
+
+            synchronized (mailBoxInstance) {
+                actorInstance.isBusy = false;
+                mailBoxInstance.notify();
+            }
         }
+
     }
+    private static int sent = 0;
 
     public ActorRoutine(AbsActor<? extends Message> actor, MailBox<? extends Message> mailBox) {
         actorInstance = actor;

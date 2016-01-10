@@ -88,4 +88,6 @@ public interface ActorSystem {
         LOCAL,
         REMOTE
     }
+
+    Actor getActor(ActorRef ref);
 }

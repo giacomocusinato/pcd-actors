@@ -53,7 +53,7 @@ public class LocalActorRef<T extends Message> extends AbsActorRef<T> {
     @Override
     public void send(T message, ActorRef to) {
         AbsActor receiver = (AbsActor) actorSystem.getActor(to);
-        receiver.scheduleMessage(message, to);
+        receiver.scheduleMessage(message, this);
     }
 
 }
