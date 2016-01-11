@@ -49,12 +49,12 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     /**
      * Mailbox of the current actor.
      */
-    protected final MailBox<T> mailBox = new BaseMailBox<>();
+    private final MailBox<T> mailBox = new BaseMailBox<>();
 
     /**
      * Actor's helper thread that checks the incoming messages.
      */
-    private Thread routine;
+    private final Thread routine;
 
     /**
      * Tells if the actor is currently processing a received message.
@@ -80,7 +80,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     }
 
     /**
-     * Sets the self-referece.
+     * Sets the self-reference.
      *
      * @param self The reference to itself
      * @return The actor.

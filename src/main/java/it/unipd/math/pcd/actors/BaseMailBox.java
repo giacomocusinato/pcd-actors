@@ -49,7 +49,7 @@ import java.util.ArrayList;
  */
 public class BaseMailBox<T extends Message> implements MailBox<T> {
 
-    protected ArrayList<T> list = new ArrayList<>();
+    protected final ArrayList<T> list = new ArrayList<>();
 
     @Override
     public synchronized void add(int index, T message) {

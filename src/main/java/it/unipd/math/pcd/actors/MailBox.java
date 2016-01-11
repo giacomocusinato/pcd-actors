@@ -65,7 +65,7 @@ public interface MailBox<T extends Message> {
     /**
      * Removes a message from the mailbox.
      *
-     * @param message The type of messages the actor can receive
+     * @param index The type of messages the actor can receive
      */
     T remove(int index);
 

@@ -40,7 +40,7 @@ package it.unipd.math.pcd.actors;
  */
 public abstract class AbsActorRef<T extends Message> implements ActorRef<T> {
 
-    protected AbsActorSystem actorSystem;
+    protected final AbsActorSystem actorSystem;
 
     /**
      * AbsActorRef constructor. Requires an instance of the ActorSystem.

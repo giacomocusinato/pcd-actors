@@ -50,7 +50,7 @@ public class ActorRoutine<T extends Message> implements Runnable {
      */
     private class ReceiveService extends Thread {
 
-        Message message;
+        private final Message message;
 
         ReceiveService(Message m) {
             message = m;
