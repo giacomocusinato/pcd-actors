@@ -38,7 +38,7 @@ package it.unipd.math.pcd.actors;
  * @version 1.0
  * @since 1.0
  */
-public class ActorRoutine<T extends Message> extends Thread {
+public class ActorRoutine<T extends Message> implements Runnable {
 
     private final AbsActor actorInstance;
     private final MailBox mailBoxInstance;

@@ -52,6 +52,11 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     protected final MailBox<T> mailBox = new BaseMailBox<>();
 
     /**
+     * Actor's helper thread that checks the incoming messages.
+     */
+    private Thread routine;
+
+    /**
      * Tells if the actor is currently processing a received message.
      */
     public boolean isBusy = false;
@@ -70,7 +75,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
      * Class constructor.
      */
     public AbsActor() {
-        new ActorRoutine<T>(this, mailBox).start();
+        routine = new Thread(new ActorRoutine<T>(this, mailBox));
+        routine.start();
     }
 
     /**
@@ -95,4 +101,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
             this.mailBox.notify();
         }
     }
+
+
 }
