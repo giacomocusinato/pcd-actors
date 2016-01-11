@@ -102,5 +102,10 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         }
     }
 
-
+    /**
+     * Interrupts the actor's routine.
+     */
+    public final void interruptRoutine() {
+        routine.interrupt();
+    }
 }

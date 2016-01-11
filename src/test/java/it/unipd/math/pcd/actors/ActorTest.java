@@ -94,8 +94,8 @@ public class ActorTest {
 
         Assert.assertEquals("A ping actor has received a ping message", "Ping",
                 pingActor.getLastMessage().getMessage());
-        //Assert.assertEquals("A pong actor has received back a pong message", "Pong",
-        //        pongActor.getLastMessage().getMessage());
+        Assert.assertEquals("A pong actor has received back a pong message", "Pong",
+                pongActor.getLastMessage().getMessage());
     }
 
     @Test
@@ -110,5 +110,23 @@ public class ActorTest {
 
         Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000",
                 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
+    }
+
+    @Test
+    public void shouldLooseSomeMessages() throws InterruptedException {
+
+        TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
+
+        system.stop();
+
+        for (int i = 0; i < 10; i++) {
+            TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
+            adder.send(new Increment(), counter);
+        }
+
+        Thread.sleep(2000);
+
+        Assert.assertTrue("An actor should not be receiving messages if the system is stopped.",
+                0 == ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
     }
 }

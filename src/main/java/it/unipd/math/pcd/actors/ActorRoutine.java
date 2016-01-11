@@ -67,7 +67,6 @@ public class ActorRoutine<T extends Message> implements Runnable {
         }
 
     }
-    private static int sent = 0;
 
     public ActorRoutine(AbsActor<? extends Message> actor, MailBox<? extends Message> mailBox) {
         actorInstance = actor;
@@ -82,7 +81,7 @@ public class ActorRoutine<T extends Message> implements Runnable {
                     try {
                         mailBoxInstance.wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        return;
                     }
                 }
 

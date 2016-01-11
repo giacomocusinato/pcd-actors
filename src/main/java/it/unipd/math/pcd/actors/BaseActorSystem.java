@@ -58,11 +58,14 @@ public class BaseActorSystem extends AbsActorSystem {
 
     @Override
     public void stop() {
-
+        for (ActorRef<?> actor : this.actors.keySet()) {
+            this.stop(actor);
+        }
     }
 
     @Override
     public void stop(ActorRef<?> actor) {
-
+        AbsActor act = (AbsActor) this.getActor(actor);
+        act.interruptRoutine();
     }
 }
