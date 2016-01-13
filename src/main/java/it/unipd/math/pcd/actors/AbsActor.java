@@ -57,11 +57,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     private final Thread routine;
 
     /**
-     * Tells if the actor is currently processing a received message.
-     */
-    public boolean isBusy = false;
-
-    /**
      * Self-reference of the actor.
      */
     protected ActorRef<T> self;
@@ -75,7 +70,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
      * Class constructor.
      */
     public AbsActor() {
-        routine = new Thread(new ActorRoutine<T>(this, mailBox));
+        routine = new Thread(new ActorRoutine(this, mailBox));
         routine.start();
     }
 
@@ -108,4 +103,12 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     public final void interruptRoutine() {
         routine.interrupt();
     }
+
+
+    /**
+     * Get's the actor's routine state.
+     *
+     * @return A boolean stating of the actor's routine has finished or not.
+     */
+    public boolean isFinished = false;
 }

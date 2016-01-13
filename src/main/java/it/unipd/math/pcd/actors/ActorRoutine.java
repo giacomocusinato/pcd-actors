@@ -38,35 +38,11 @@ package it.unipd.math.pcd.actors;
  * @version 1.0
  * @since 1.0
  */
-public class ActorRoutine<T extends Message> implements Runnable {
+public class ActorRoutine implements Runnable {
 
     private final AbsActor actorInstance;
     private final MailBox mailBoxInstance;
 
-
-    /**
-     * This service is responsible to process the received
-     * message in a different thread.
-     */
-    private class ReceiveService extends Thread {
-
-        private final Message message;
-
-        ReceiveService(Message m) {
-            message = m;
-        }
-
-        @Override
-        public void run() {
-            actorInstance.receive(message);
-
-            synchronized (mailBoxInstance) {
-                actorInstance.isBusy = false;
-                mailBoxInstance.notify();
-            }
-        }
-
-    }
 
     public ActorRoutine(AbsActor<? extends Message> actor, MailBox<? extends Message> mailBox) {
         actorInstance = actor;
@@ -75,19 +51,32 @@ public class ActorRoutine<T extends Message> implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            synchronized (this.mailBoxInstance) {
-                while(mailBoxInstance.size() == 0 || actorInstance.isBusy) {
-                    try {
+
+        try {
+
+            while (!Thread.currentThread().isInterrupted()) {
+                synchronized (this.mailBoxInstance) {
+                    while (mailBoxInstance.size() == 0) {
                         mailBoxInstance.wait();
-                    } catch (InterruptedException e) {
-                        return;
                     }
                 }
+                actorInstance.receive(mailBoxInstance.remove(0));
+            }
+        } catch (InterruptedException e) {
 
-                new ReceiveService(mailBoxInstance.remove(0)).start();
-                this.actorInstance.isBusy = true;
+        } finally {
+
+            synchronized (mailBoxInstance) {
+                while (mailBoxInstance.size() > 0) {
+                    actorInstance.receive(mailBoxInstance.remove(0));
+                }
+            }
+            synchronized (actorInstance) {
+                actorInstance.isFinished = true;
+                actorInstance.notify();
             }
         }
+
+
     }
 }

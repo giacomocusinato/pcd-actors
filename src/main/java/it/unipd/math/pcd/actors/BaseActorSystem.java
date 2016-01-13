@@ -60,17 +60,31 @@ public class BaseActorSystem extends AbsActorSystem {
 
     @Override
     public void stop() {
+
         for (ActorRef<?> actor : this.actors.keySet()) {
             this.stop(actor);
         }
     }
 
     @Override
-    public void stop(ActorRef<?> actor) throws NoSuchActorException {
-        if (actors.containsKey(actor)) {
-            actors.remove(actor);
-        } else {
+    public synchronized void stop(ActorRef<?> actor) throws NoSuchActorException {
+
+        if (!actors.containsKey(actor)) {
             throw new NoSuchActorException();
+        }
+
+        AbsActor act = (AbsActor) this.getActor(actor);
+        act.interruptRoutine();
+
+        synchronized (act) {
+
+            while(!act.isFinished) {
+                try {
+                    act.wait();
+                } catch (InterruptedException e) { }
+            }
+
+            actors.remove(actor);
         }
     }
 }
