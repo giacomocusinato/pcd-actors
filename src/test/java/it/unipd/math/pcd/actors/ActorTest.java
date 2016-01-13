@@ -112,21 +112,4 @@ public class ActorTest {
                 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
     }
 
-    @Test
-    public void shouldLooseSomeMessages() throws InterruptedException {
-
-        TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
-
-        system.stop();
-
-        for (int i = 0; i < 10; i++) {
-            TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
-            adder.send(new Increment(), counter);
-        }
-
-        Thread.sleep(2000);
-
-        Assert.assertTrue("An actor should not be receiving messages if the system is stopped.",
-                0 == ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
-    }
 }

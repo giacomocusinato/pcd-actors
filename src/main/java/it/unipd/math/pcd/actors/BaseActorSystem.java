@@ -31,6 +31,8 @@
 package it.unipd.math.pcd.actors;
 
 
+import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
+
 /**
  * A concrete implementation of the map-based actor system.
  *
@@ -64,8 +66,11 @@ public class BaseActorSystem extends AbsActorSystem {
     }
 
     @Override
-    public void stop(ActorRef<?> actor) {
-        AbsActor act = (AbsActor) this.getActor(actor);
-        act.interruptRoutine();
+    public void stop(ActorRef<?> actor) throws NoSuchActorException {
+        if (actors.containsKey(actor)) {
+            actors.remove(actor);
+        } else {
+            throw new NoSuchActorException();
+        }
     }
 }
