@@ -61,9 +61,11 @@ public class ActorRoutine implements Runnable {
                     }
                 }
 
-                MailMessage message = this.mailBoxInstance.remove(0);
-                this.actorInstance.sender = message.getSender();
-                this.actorInstance.receive(message.getMessage());
+                synchronized (this) {
+                    MailMessage message = this.mailBoxInstance.remove(0);
+                    this.actorInstance.sender = message.getSender();
+                    this.actorInstance.receive(message.getMessage());
+                }
             }
         } catch (InterruptedException e) {
 
