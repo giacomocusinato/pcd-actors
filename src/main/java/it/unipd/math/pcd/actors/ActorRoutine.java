@@ -60,20 +60,25 @@ public class ActorRoutine implements Runnable {
                         mailBoxInstance.wait();
                     }
                 }
-                actorInstance.receive(mailBoxInstance.remove(0));
+
+                MailMessage message = this.mailBoxInstance.remove(0);
+                this.actorInstance.sender = message.getSender();
+                this.actorInstance.receive(message.getMessage());
             }
         } catch (InterruptedException e) {
 
         } finally {
 
-            synchronized (mailBoxInstance) {
-                while (mailBoxInstance.size() > 0) {
-                    actorInstance.receive(mailBoxInstance.remove(0));
+            synchronized (this.mailBoxInstance) {
+                while (this.mailBoxInstance.size() > 0) {
+                    MailMessage message = this.mailBoxInstance.remove(0);
+                    this.actorInstance.sender = message.getSender();
+                    this.actorInstance.receive(message.getMessage());
                 }
             }
-            synchronized (actorInstance) {
-                actorInstance.isFinished = true;
-                actorInstance.notify();
+            synchronized (this.actorInstance) {
+                this.actorInstance.isFinished = true;
+                this.actorInstance.notify();
             }
         }
 

@@ -49,20 +49,20 @@ import java.util.ArrayList;
  */
 public class BaseMailBox<T extends Message> implements MailBox<T> {
 
-    protected final ArrayList<T> list = new ArrayList<>();
+    protected final ArrayList<MailMessage<T>> list = new ArrayList<>();
 
     @Override
-    public synchronized void add(int index, T message) {
-        this.list.add(index, message);
+    public synchronized void add(int index, T message, ActorRef<? extends Message> sender) {
+        this.list.add(index, new MailMessage<T>(message, sender));
     }
 
     @Override
-    public synchronized boolean add(T message) {
-        return this.list.add(message);
+    public synchronized boolean add(T message, ActorRef<? extends Message> sender) {
+        return this.list.add(new MailMessage<T>(message, sender));
     }
 
     @Override
-    public synchronized T remove(int index) {
+    public synchronized MailMessage<? extends Message> remove(int index) {
         return this.list.remove(index);
     }
 

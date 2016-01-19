@@ -37,42 +37,35 @@
  */
 package it.unipd.math.pcd.actors;
 
+
 /**
- * Defines the interface of the mailbox, a container that manages the incoming
- * messages of a specific actor.
+ * Defines the message data sent to an actor's mailbox.
+ * Contains the instances of the message and the sender actor.
  *
- * @author Riccardo Cardin
+ * @author Giacomo Cusinato
  * @version 1.0
  * @since 1.0
  */
-public interface MailBox<T extends Message> {
+public class MailMessage<T extends Message> {
+    private final T message;
+    private final ActorRef<T> sender;
+
+    public MailMessage(T msg, ActorRef send) {
+        this.message = msg;
+        this.sender = send;
+    }
 
     /**
-     * Adds a message at the end of the mailbox.
+     * Return the message object
      *
-     * @param message The type of messages the actor can receive
+     * @return The message object
      */
-    boolean add(T message, ActorRef<? extends Message> sender);
+    public T getMessage() { return message; }
 
     /**
-     * Adds a message at a defined index in the mailbox.
+     * Return the sender object
      *
-     * @param message The type of messages the actor can receive
-     * @param index The index of the list to add the message to.
+     * @return The sender object
      */
-    void add(int index, T message, ActorRef<? extends Message> actor);
-
-    /**
-     * Removes a message from the mailbox.
-     *
-     * @param index The type of messages the actor can receive
-     */
-    MailMessage<? extends Message> remove(int index);
-
-    /**
-     * Gets the size of the mailbox.
-     *
-     * @return The number of messages stored in the mailbox
-     */
-    int size();
+    public ActorRef<? extends Message> getSender() { return sender; }
 }
