@@ -40,7 +40,7 @@ import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
  * @version 1.0
  * @since 1.0
  */
-public class BaseActorSystem extends AbsActorSystem {
+public final class BaseActorSystem extends AbsActorSystem {
 
     /**
      * Creates an ActorRef object of the given type.
