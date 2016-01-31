@@ -80,6 +80,13 @@ public abstract class AbsActorSystem implements ActorSystem {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
 
+    /**
+     * Gets an Actor instance giving the underlying ActorRef
+     *
+     * @param ref The actor reference instance
+     * @return The Actor instance
+     * @throws NoSuchActorException
+     */
     public Actor getActor(ActorRef ref) throws NoSuchActorException {
         if (!actors.containsKey(ref)) {
             throw new NoSuchActorException();

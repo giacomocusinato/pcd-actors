@@ -58,6 +58,10 @@ public final class BaseActorSystem extends AbsActorSystem {
         }
     }
 
+    /**
+     * Stops the whole actor system, interrupting all the helper
+     * threads and removing the actor objects form the system.
+     */
     @Override
     public void stop() {
 
@@ -66,6 +70,13 @@ public final class BaseActorSystem extends AbsActorSystem {
         }
     }
 
+    /**
+     * Stops a given actor, interrupting the related
+     * thread routine and removing its instance form the system.
+     * 
+     * @param actor The actor to be stopped
+     * @throws NoSuchActorException
+     */
     @Override
     public synchronized void stop(ActorRef<?> actor) throws NoSuchActorException {
 
