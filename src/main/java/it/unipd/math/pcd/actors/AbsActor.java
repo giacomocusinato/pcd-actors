@@ -98,15 +98,22 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
     /**
      * Interrupts the actor's routine.
      */
-    public final void interruptRoutine() {
+    public final synchronized void interruptRoutine() {
         routine.interrupt();
+        this.isInterrupted = true;
     }
 
 
     /**
-     * Get's the actor's routine state.
+     * True if the actor routine has finished, false otherwise.
      *
-     * @return A boolean stating of the actor's routine has finished or not.
      */
     public boolean isFinished = false;
+
+    /**
+     * True if the actor routine has been interrupted, false otherwise.
+     *
+     */
+    public boolean isInterrupted = false;
+
 }

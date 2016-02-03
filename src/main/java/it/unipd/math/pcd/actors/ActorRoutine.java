@@ -54,7 +54,7 @@ public class ActorRoutine implements Runnable {
 
         try {
 
-            while (!Thread.currentThread().isInterrupted()) {
+            while (!this.actorInstance.isInterrupted) {
                 synchronized (this.mailBoxInstance) {
                     while (mailBoxInstance.size() == 0) {
                         mailBoxInstance.wait();
@@ -81,6 +81,7 @@ public class ActorRoutine implements Runnable {
             synchronized (this.actorInstance) {
                 this.actorInstance.isFinished = true;
                 this.actorInstance.notify();
+
             }
         }
 
